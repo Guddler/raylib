@@ -11,6 +11,7 @@
 #    PLATFORM_RPI:      Raspberry Pi (deprecated - RPI OS Buster only)
 #    PLATFORM_DRM:      Linux native mode, including Raspberry Pi (RPI OS Bullseye)
 #    PLATFORM_WEB:      HTML5 (Chrome, Firefox)
+#	 PLATFORM_AOS4:     AmigaOS4
 #
 #  Many thanks to Milan Nikolic (@gen2brain) for implementing Android platform pipeline.
 #  Many thanks to Emanuele Petriglia for his contribution on GNU/Linux pipeline.
@@ -41,7 +42,7 @@
 
 # Define required environment variables
 #------------------------------------------------------------------------------------------------
-# Define target platform: PLATFORM_DESKTOP, PLATFORM_RPI, PLATFORM_DRM, PLATFORM_ANDROID, PLATFORM_WEB
+# Define target platform: PLATFORM_DESKTOP, PLATFORM_RPI, PLATFORM_DRM, PLATFORM_ANDROID, PLATFORM_WEB, PLATFORM_AOS4
 PLATFORM             ?= PLATFORM_DESKTOP
 
 # Define required raylib variables
@@ -101,6 +102,56 @@ ifeq ($(PLATFORM),PLATFORM_RPI)
         RPI_TOOLCHAIN ?= C:/SysGCC/Raspberry
         RPI_TOOLCHAIN_SYSROOT ?= $(RPI_TOOLCHAIN)/arm-linux-gnueabihf/sysroot
     endif
+endif
+
+ifeq ($(PLATFORM),PLATFORM_AOS4)
+	USE_AOS4_CROSS_COMPILER ?= TRUE
+	USE_EXTERNAL_GLFW ?= ON
+	ifndef AOS4_TOOLCHAIN_DEFINED
+		echo "ERROR: External toolchain required for AOS4"
+	endif
+	# Perform a custom build
+	CUSTOMIZE_BUILD ?= ON
+	BUILD_EXAMPLES ?= OFF
+	USE_AUDIO ?= OFF
+	SUPPORT_MODULE_RAUDIO ?= OFF
+	# SUPPORT_MODULE_RSHAPES ?= ON
+	# SUPPORT_MODULE_RTEXTURES ?= ON
+	# SUPPORT_MODULE_RTEXT ?= ON
+	# SUPPORT_MODULE_RMODELS ?= ON
+	# SUPPORT_CAMERA_SYSTEM ?= ON
+	# SUPPORT_GESTURES_SYSTEM ?= ON
+	# SUPPORT_MOUSE_GESTURES ?= ON
+	# SUPPORT_DEFAULT_FONT ?= ON
+	# SUPPORT_SCREEN_CAPTURE ?= ON
+	# SUPPORT_GIF_RECORDING ?= ON
+	# SUPPORT_COMPRESSION_API ?= ON
+	# SUPPORT_QUADS_DRAW_MODE ?= ON
+	# SUPPORT_IMAGE_EXPORT ?= ON
+	# SUPPORT_IMAGE_GENERATION ?= ON
+	# SUPPORT_IMAGE_MANIPULATION ?= ON
+	# SUPPORT_FILEFORMAT_PNG ?= ON
+	# SUPPORT_FILEFORMAT_DDS ?= ON
+	# SUPPORT_FILEFORMAT_HDR ?= ON
+	# SUPPORT_FILEFORMAT_PNM ?= ON
+	# SUPPORT_FILEFORMAT_KTX ?= ON
+	# SUPPORT_FILEFORMAT_ASTC ?= ON
+	# SUPPORT_FILEFORMAT_FNT ?= ON
+	# SUPPORT_FILEFORMAT_TTF ?= ON
+	# SUPPORT_TEXT_MANIPULATION ?= ON
+	# SUPPORT_MESH_GENERATION ?= ON
+	# SUPPORT_FILEFORMAT_OBJ ?= ON
+	# SUPPORT_FILEFORMAT_MTL ?= ON
+	# SUPPORT_FILEFORMAT_IQM ?= ON
+	# SUPPORT_FILEFORMAT_GLTF ?= ON
+	# SUPPORT_FILEFORMAT_VOX ?= ON
+	# SUPPORT_FILEFORMAT_WAV ?= ON
+	# SUPPORT_FILEFORMAT_OGG ?= ON
+	# SUPPORT_FILEFORMAT_XM ?= ON
+	# SUPPORT_FILEFORMAT_MOD ?= ON
+	# SUPPORT_FILEFORMAT_MP3 ?= ON
+	# SUPPORT_STANDARD_FILEIO ?= ON
+	# SUPPORT_TRACELOG ?= ON
 endif
 
 # Determine if the file has root access (only required to install raylib)
@@ -252,6 +303,9 @@ ifeq ($(PLATFORM),PLATFORM_ANDROID)
     # By default use OpenGL ES 2.0 on Android
     GRAPHICS = GRAPHICS_API_OPENGL_ES2
 endif
+ifeq ($(PLATFORM),PLATFORM_AOS4)
+	GRAPHICS ?= GRAPHICS_API_OPENGL_ES2
+endif
 
 # Define default C compiler and archiver to pack library: CC, AR
 #------------------------------------------------------------------------------------------------
@@ -346,6 +400,14 @@ ifeq ($(RAYLIB_BUILD_MODE),RELEASE)
         CFLAGS += -O2
     endif
 endif
+
+# ifeq ($(PLATFORM),PLATFORM_AOS4)
+# 	CFLAGS += -mcrt=clib2 -Ofast -mstrict-align
+# 	LDFLAGS += -mcrt=clib2 -athread=native -lpthread
+# 	# This is already in the toolchain file
+# 	#ADD_DEFINITIONS("-pipe")
+# 	SET( EXTRA_LIBS libpthread.a libogles2.a libglfw3.a)
+# endif
 
 # Additional flags for compiler (if desired)
 #  -Wextra                  enables some extra warning flags that are not enabled by -Wall

@@ -1,0 +1,32 @@
+This branch is forked from Raylib tag v4.5 in order to work on a port for Amiga OS4.1
+
+It is in no way fit for release and a complete hack job.
+
+** IT DOES NOT CURRENTLY WORK and might never work **
+
+(but hopefully it will soon of course!)
+
+It has all of the latest changes from https://github.com/afxgroup/glfw applied to the internal GLFW
+but ideally none of that should be needed and can be undone - it should be possible instead to use
+afxgroup GLFW externally and link with that instead. I haven't yet succeeded with that.
+
+If intending to link against the external GLFW which is built against afxgroup clib2 then you will need
+to do the same, otherwise, if you have your own GLFW then build against whatever your GLFW was built with
+(newlib / clib2). If intending to target newlib then further changes are required to GLFW but nothing all
+that major.
+
+Since most people seem to be cross-compiling when building for AOS4, and not all environments are the same
+(unlike the SDK on AOS4 itself), I didn't really know how to go about adding AOS4 support to most places in
+the cmake setup and for this reason, currently, in order to build you will need to supply a toolchain file
+on the command line along with additional options as per the following example:
+
+cmake -DCMAKE_TOOLCHAIN_FILE=../../raylib_clib2_toolchain -DPLATFORM=AOS4 -DOPENGL_VERSION=XXX -DCMAKE_BUILD_TYPE=Release ..
+
+You must ensure that the following is defined somewhere in your toolchain file as the Raylib Makefile will
+check for it. Checking that you have supplied a toolchain file isn't really required as without it
+Raylib won't have a clue how to build for AOS4 and nothing will work anyway.
+
+SET_PROPERTY(GLOBAL PROPERTY AOS4_TOOLCHAIN_DEFINED TRUE)
+
+The bulk of the AOS4 config is done in `src/Makefile`. I have disabled audio for the moment as it was causing
+errors and also disabled building the examples.

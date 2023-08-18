@@ -63,9 +63,19 @@ if (GLFW_BUILD_X11 OR GLFW_BUILD_WAYLAND)
     target_sources(glfw PRIVATE posix_poll.h posix_poll.c)
 endif()
 
+if (GLFW_BUILD_OS4)
+    target_compile_definitions(glfw PRIVATE _GLFW_OS4)
+    target_sources(glfw PRIVATE os4_init.c os4_window.c os4_monitor.c
+								os4_context.c os4_joystick.c)
+endif()
+
 if (GLFW_BUILD_WAYLAND)
     include(CheckIncludeFiles)
     include(CheckFunctionExists)
+	check_include_files(xkbcommon/xkbcommon-compose.h HAVE_XKBCOMMON_COMPOSE_H)
+    if (HAVE_XKBCOMMON_COMPOSE_H)
+        target_compile_definitions(glfw PRIVATE HAVE_XKBCOMMON_COMPOSE_H)
+    endif()
     check_function_exists(memfd_create HAVE_MEMFD_CREATE)
     if (HAVE_MEMFD_CREATE)
         target_compile_definitions(glfw PRIVATE HAVE_MEMFD_CREATE)
@@ -156,6 +166,11 @@ if (GLFW_BUILD_WIN32)
     list(APPEND glfw_PKG_LIBS "-lgdi32")
 endif()
 
+if (GLFW_BUILD_OS4)
+    target_compile_options(glfw PRIVATE "-DGL4ES" "-gstabs" "-athread=native")
+    target_link_libraries(glfw PRIVATE "-lGL")
+endif()
+
 if (GLFW_BUILD_COCOA)
     target_link_libraries(glfw PRIVATE "-framework Cocoa"
                                        "-framework IOKit"
@@ -170,7 +185,7 @@ if (GLFW_BUILD_WAYLAND)
         wayland-client>=0.2.7
         wayland-cursor>=0.2.7
         wayland-egl>=0.2.7
-        xkbcommon>=0.5.0)
+        xkbcommon)
 
     target_include_directories(glfw PRIVATE ${Wayland_INCLUDE_DIRS})
 
@@ -397,4 +412,3 @@ if (GLFW_INSTALL)
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 endif()
-
