@@ -105,11 +105,11 @@ ifeq ($(PLATFORM),PLATFORM_RPI)
 endif
 
 ifeq ($(PLATFORM),PLATFORM_AOS4)
-	USE_AOS4_CROSS_COMPILER ?= TRUE
-	USE_EXTERNAL_GLFW ?= ON
-	ifndef AOS4_TOOLCHAIN_DEFINED
-		echo "ERROR: External toolchain required for AOS4"
-	endif
+	#USE_AOS4_CROSS_COMPILER ?= TRUE
+	#USE_EXTERNAL_GLFW ?= ON
+	#ifndef AOS4_TOOLCHAIN_DEFINED
+	#	echo "ERROR: External toolchain required for AOS4"
+	#endif
 	# Perform a custom build
 	CUSTOMIZE_BUILD ?= ON
 	BUILD_EXAMPLES ?= OFF

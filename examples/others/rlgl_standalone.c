@@ -288,7 +288,7 @@ static void DrawRectangleV(Vector2 position, Vector2 size, Color color)
         rlVertex2f(position.x, position.y);
         rlVertex2f(position.x + size.x, position.y + size.y);
         rlVertex2f(position.x + size.x, position.y);
-    rlEnd();
+    RLEND();
 }
 
 // Draw a grid centered at (0, 0, 0)
@@ -320,7 +320,7 @@ static void DrawGrid(int slices, float spacing)
             rlVertex3f((float)-halfSlices*spacing, 0.0f, (float)i*spacing);
             rlVertex3f((float)halfSlices*spacing, 0.0f, (float)i*spacing);
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw cube
@@ -394,7 +394,7 @@ static void DrawCube(Vector3 position, float width, float height, float length, 
             rlVertex3f(x-width/2, y-height/2, z+length/2);  // Bottom Left
             rlVertex3f(x-width/2, y+height/2, z+length/2);  // Top Left
             rlVertex3f(x-width/2, y-height/2, z-length/2);  // Bottom Right
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -464,6 +464,6 @@ static void DrawCubeWires(Vector3 position, float width, float height, float len
             // Right Line
             rlVertex3f(x+width/2, y-height/2, z+length/2);  // Top Right Front
             rlVertex3f(x+width/2, y-height/2, z-length/2);  // Top Right Back
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }

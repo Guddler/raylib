@@ -560,15 +560,15 @@ RLAPI void rlViewport(int x, int y, int width, int height); // Set the viewport 
 // Functions Declaration - Vertex level operations
 //------------------------------------------------------------------------------------
 RLAPI void rlBegin(int mode);                         // Initialize drawing mode (how to organize vertex)
-RLAPI void rlEnd(void);                               // Finish vertex providing
+RLAPI void RLEND(void);                               // Finish vertex providing
 RLAPI void rlVertex2i(int x, int y);                  // Define one vertex (position) - 2 int
 RLAPI void rlVertex2f(float x, float y);              // Define one vertex (position) - 2 float
 RLAPI void rlVertex3f(float x, float y, float z);     // Define one vertex (position) - 3 float
 RLAPI void rlTexCoord2f(float x, float y);            // Define one vertex (texture coordinate) - 2 float
-RLAPI void rlNormal3f(float x, float y, float z);     // Define one vertex (normal) - 3 float
+RLAPI void RLNORMAL3F(float x, float y, float z);     // Define one vertex (normal) - 3 float
 RLAPI void rlColor4ub(unsigned char r, unsigned char g, unsigned char b, unsigned char a);  // Define one vertex (color) - 4 byte
 RLAPI void rlColor3f(float x, float y, float z);          // Define one vertex (color) - 3 float
-RLAPI void rlColor4f(float x, float y, float z, float w); // Define one vertex (color) - 4 float
+RLAPI void RLCOLOR4F(float x, float y, float z, float w); // Define one vertex (color) - 4 float
 
 //------------------------------------------------------------------------------------
 // Functions Declaration - OpenGL style functions (common to 1.1, 3.3+, ES2)
@@ -1313,15 +1313,15 @@ void rlBegin(int mode)
     }
 }
 
-void rlEnd() { glEnd(); }
+void RLEND() { glEnd(); }
 void rlVertex2i(int x, int y) { glVertex2i(x, y); }
 void rlVertex2f(float x, float y) { glVertex2f(x, y); }
 void rlVertex3f(float x, float y, float z) { glVertex3f(x, y, z); }
 void rlTexCoord2f(float x, float y) { glTexCoord2f(x, y); }
-void rlNormal3f(float x, float y, float z) { glNormal3f(x, y, z); }
+void RLNORMAL3F(float x, float y, float z) { glNormal3f(x, y, z); }
 void rlColor4ub(unsigned char r, unsigned char g, unsigned char b, unsigned char a) { glColor4ub(r, g, b, a); }
 void rlColor3f(float x, float y, float z) { glColor3f(x, y, z); }
-void rlColor4f(float x, float y, float z, float w) { glColor4f(x, y, z, w); }
+void RLCOLOR4F(float x, float y, float z, float w) { glColor4f(x, y, z, w); }
 #endif
 #if defined(GRAPHICS_API_OPENGL_33) || defined(GRAPHICS_API_OPENGL_ES2)
 // Initialize drawing mode (how to organize vertex)
@@ -1358,7 +1358,7 @@ void rlBegin(int mode)
 }
 
 // Finish vertex providing
-void rlEnd(void)
+void RLEND(void)
 {
     // NOTE: Depth increment is dependant on rlOrtho(): z-near and z-far values,
     // as well as depth buffer bit-depth (16bit or 24bit or 32bit)
@@ -1451,7 +1451,7 @@ void rlTexCoord2f(float x, float y)
 
 // Define one vertex (normal)
 // NOTE: Normals limited to TRIANGLES only?
-void rlNormal3f(float x, float y, float z)
+void RLNORMAL3F(float x, float y, float z)
 {
     RLGL.State.normalx = x;
     RLGL.State.normaly = y;
@@ -1468,7 +1468,7 @@ void rlColor4ub(unsigned char x, unsigned char y, unsigned char z, unsigned char
 }
 
 // Define one vertex (color)
-void rlColor4f(float r, float g, float b, float a)
+void RLCOLOR4F(float r, float g, float b, float a)
 {
     rlColor4ub((unsigned char)(r*255), (unsigned char)(g*255), (unsigned char)(b*255), (unsigned char)(a*255));
 }

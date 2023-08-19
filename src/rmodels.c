@@ -181,7 +181,7 @@ void DrawLine3D(Vector3 startPos, Vector3 endPos, Color color)
         rlColor4ub(color.r, color.g, color.b, color.a);
         rlVertex3f(startPos.x, startPos.y, startPos.z);
         rlVertex3f(endPos.x, endPos.y, endPos.z);
-    rlEnd();
+    RLEND();
 }
 
 // Draw a point in 3D space, actually a small line
@@ -193,7 +193,7 @@ void DrawPoint3D(Vector3 position, Color color)
             rlColor4ub(color.r, color.g, color.b, color.a);
             rlVertex3f(0.0f, 0.0f, 0.0f);
             rlVertex3f(0.0f, 0.0f, 0.1f);
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -212,7 +212,7 @@ void DrawCircle3D(Vector3 center, float radius, Vector3 rotationAxis, float rota
                 rlVertex3f(sinf(DEG2RAD*i)*radius, cosf(DEG2RAD*i)*radius, 0.0f);
                 rlVertex3f(sinf(DEG2RAD*(i + 10))*radius, cosf(DEG2RAD*(i + 10))*radius, 0.0f);
             }
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -224,7 +224,7 @@ void DrawTriangle3D(Vector3 v1, Vector3 v2, Vector3 v3, Color color)
         rlVertex3f(v1.x, v1.y, v1.z);
         rlVertex3f(v2.x, v2.y, v2.z);
         rlVertex3f(v3.x, v3.y, v3.z);
-    rlEnd();
+    RLEND();
 }
 
 // Draw a triangle strip defined by points
@@ -250,7 +250,7 @@ void DrawTriangleStrip3D(Vector3 *points, int pointCount, Color color)
                 rlVertex3f(points[i - 2].x, points[i - 2].y, points[i - 2].z);
             }
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw cube
@@ -323,7 +323,7 @@ void DrawCube(Vector3 position, float width, float height, float length, Color c
             rlVertex3f(x - width/2, y - height/2, z + length/2);  // Bottom Left
             rlVertex3f(x - width/2, y + height/2, z + length/2);  // Top Left
             rlVertex3f(x - width/2, y - height/2, z - length/2);  // Bottom Right
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -401,7 +401,7 @@ void DrawCubeWires(Vector3 position, float width, float height, float length, Co
             // Right line
             rlVertex3f(x + width/2, y - height/2, z + length/2);  // Top right front
             rlVertex3f(x + width/2, y - height/2, z - length/2);  // Top right back
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -453,7 +453,7 @@ void DrawSphereEx(Vector3 centerPos, float radius, int rings, int slices, Color 
                                cosf(DEG2RAD*(270 + (180.0f/(rings + 1))*(i + 1)))*cosf(DEG2RAD*(360.0f*(j + 1)/slices)));
                 }
             }
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -494,7 +494,7 @@ void DrawSphereWires(Vector3 centerPos, float radius, int rings, int slices, Col
                                cosf(DEG2RAD*(270 + (180.0f/(rings + 1))*i))*cosf(DEG2RAD*(360.0f*j/slices)));
                 }
             }
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -550,7 +550,7 @@ void DrawCylinder(Vector3 position, float radiusTop, float radiusBottom, float h
                 rlVertex3f(sinf(DEG2RAD*(i + 360.0f/sides))*radiusBottom, 0, cosf(DEG2RAD*(i + 360.0f/sides))*radiusBottom);
                 rlVertex3f(sinf(DEG2RAD*i)*radiusBottom, 0, cosf(DEG2RAD*i)*radiusBottom);
             }
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -607,7 +607,7 @@ void DrawCylinderEx(Vector3 startPos, Vector3 endPos, float startRadius, float e
                 rlVertex3f(w4.x, w4.y, w4.z);                   // |
             }                                                   //
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw a wired cylinder
@@ -636,7 +636,7 @@ void DrawCylinderWires(Vector3 position, float radiusTop, float radiusBottom, fl
                 rlVertex3f(sinf(DEG2RAD*i)*radiusTop, height, cosf(DEG2RAD*i)*radiusTop);
                 rlVertex3f(sinf(DEG2RAD*i)*radiusBottom, 0, cosf(DEG2RAD*i)*radiusBottom);
             }
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -683,7 +683,7 @@ void DrawCylinderWiresEx(Vector3 startPos, Vector3 endPos, float startRadius, fl
             rlVertex3f(w3.x, w3.y, w3.z);
             rlVertex3f(w4.x, w4.y, w4.z);
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw a capsule with the center of its sphere caps at startPos and endPos
@@ -826,7 +826,7 @@ void DrawCapsule(Vector3 startPos, Vector3 endPos, float radius, int slices, int
                                                                         //                   'x w3
             }
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw capsule wires with the center of its sphere caps at startPos and endPos
@@ -961,7 +961,7 @@ void DrawCapsuleWires(Vector3 startPos, Vector3 endPos, float radius, int slices
                 rlVertex3f(w3.x, w3.y, w3.z);
             }
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw a plane
@@ -974,13 +974,13 @@ void DrawPlane(Vector3 centerPos, Vector2 size, Color color)
 
         rlBegin(RL_QUADS);
             rlColor4ub(color.r, color.g, color.b, color.a);
-            rlNormal3f(0.0f, 1.0f, 0.0f);
+            RLNORMAL3F(0.0f, 1.0f, 0.0f);
 
             rlVertex3f(-0.5f, 0.0f, -0.5f);
             rlVertex3f(-0.5f, 0.0f, 0.5f);
             rlVertex3f(0.5f, 0.0f, 0.5f);
             rlVertex3f(0.5f, 0.0f, -0.5f);
-        rlEnd();
+        RLEND();
     rlPopMatrix();
 }
 
@@ -995,7 +995,7 @@ void DrawRay(Ray ray, Color color)
 
         rlVertex3f(ray.position.x, ray.position.y, ray.position.z);
         rlVertex3f(ray.position.x + ray.direction.x*scale, ray.position.y + ray.direction.y*scale, ray.position.z + ray.direction.z*scale);
-    rlEnd();
+    RLEND();
 }
 
 // Draw a grid centered at (0, 0, 0)
@@ -1027,7 +1027,7 @@ void DrawGrid(int slices, float spacing)
             rlVertex3f((float)-halfSlices*spacing, 0.0f, (float)i*spacing);
             rlVertex3f((float)halfSlices*spacing, 0.0f, (float)i*spacing);
         }
-    rlEnd();
+    RLEND();
 }
 
 // Load model from files (mesh and material)
@@ -3578,7 +3578,7 @@ void DrawBillboardPro(Camera camera, Texture2D texture, Rectangle source, Vector
         // Bottom-right corner for texture and quad
         rlTexCoord2f((float)(source.x + source.width)/texture.width, (float)source.y/texture.height);
         rlVertex3f(topRight.x, topRight.y, topRight.z);
-    rlEnd();
+    RLEND();
 
     rlSetTexture(0);
 }

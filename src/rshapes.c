@@ -116,7 +116,7 @@ void DrawPixelV(Vector2 position, Color color)
 
     rlBegin(RL_QUADS);
 
-        rlNormal3f(0.0f, 0.0f, 1.0f);
+        RLNORMAL3F(0.0f, 0.0f, 1.0f);
         rlColor4ub(color.r, color.g, color.b, color.a);
 
         rlTexCoord2f(texShapesRec.x/texShapes.width, texShapesRec.y/texShapes.height);
@@ -131,7 +131,7 @@ void DrawPixelV(Vector2 position, Color color)
         rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
         rlVertex2f(position.x + 1, position.y);
 
-    rlEnd();
+    RLEND();
 
     rlSetTexture(0);
 #else
@@ -147,7 +147,7 @@ void DrawPixelV(Vector2 position, Color color)
         rlVertex2f(position.x, position.y + 1);
         rlVertex2f(position.x + 1, position.y + 1);
 
-    rlEnd();
+    RLEND();
 #endif
 }
 
@@ -158,7 +158,7 @@ void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, Color colo
         rlColor4ub(color.r, color.g, color.b, color.a);
         rlVertex2f((float)startPosX, (float)startPosY);
         rlVertex2f((float)endPosX, (float)endPosY);
-    rlEnd();
+    RLEND();
 }
 
 // Draw a line  (Vector version)
@@ -168,7 +168,7 @@ void DrawLineV(Vector2 startPos, Vector2 endPos, Color color)
         rlColor4ub(color.r, color.g, color.b, color.a);
         rlVertex2f(startPos.x, startPos.y);
         rlVertex2f(endPos.x, endPos.y);
-    rlEnd();
+    RLEND();
 }
 
 // Draw a line defining thickness
@@ -333,7 +333,7 @@ void DrawLineStrip(Vector2 *points, int pointCount, Color color)
                 rlVertex2f(points[i].x, points[i].y);
                 rlVertex2f(points[i + 1].x, points[i + 1].y);
             }
-        rlEnd();
+        RLEND();
     }
 }
 
@@ -412,7 +412,7 @@ void DrawCircleSector(Vector2 center, float radius, float startAngle, float endA
             rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
             rlVertex2f(center.x, center.y);
         }
-    rlEnd();
+    RLEND();
 
     rlSetTexture(0);
 #else
@@ -427,7 +427,7 @@ void DrawCircleSector(Vector2 center, float radius, float startAngle, float endA
 
             angle += stepLength;
         }
-    rlEnd();
+    RLEND();
 #endif
 }
 
@@ -484,7 +484,7 @@ void DrawCircleSectorLines(Vector2 center, float radius, float startAngle, float
             rlVertex2f(center.x, center.y);
             rlVertex2f(center.x + sinf(DEG2RAD*angle)*radius, center.y + cosf(DEG2RAD*angle)*radius);
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw a gradient-filled circle
@@ -501,7 +501,7 @@ void DrawCircleGradient(int centerX, int centerY, float radius, Color color1, Co
             rlColor4ub(color2.r, color2.g, color2.b, color2.a);
             rlVertex2f((float)centerX + sinf(DEG2RAD*(i + 10))*radius, (float)centerY + cosf(DEG2RAD*(i + 10))*radius);
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw a color-filled circle (Vector version)
@@ -523,7 +523,7 @@ void DrawCircleLines(int centerX, int centerY, float radius, Color color)
             rlVertex2f(centerX + sinf(DEG2RAD*i)*radius, centerY + cosf(DEG2RAD*i)*radius);
             rlVertex2f(centerX + sinf(DEG2RAD*(i + 10))*radius, centerY + cosf(DEG2RAD*(i + 10))*radius);
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw ellipse
@@ -537,7 +537,7 @@ void DrawEllipse(int centerX, int centerY, float radiusH, float radiusV, Color c
             rlVertex2f((float)centerX + sinf(DEG2RAD*i)*radiusH, (float)centerY + cosf(DEG2RAD*i)*radiusV);
             rlVertex2f((float)centerX + sinf(DEG2RAD*(i + 10))*radiusH, (float)centerY + cosf(DEG2RAD*(i + 10))*radiusV);
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw ellipse outline
@@ -550,7 +550,7 @@ void DrawEllipseLines(int centerX, int centerY, float radiusH, float radiusV, Co
             rlVertex2f(centerX + sinf(DEG2RAD*i)*radiusH, centerY + cosf(DEG2RAD*i)*radiusV);
             rlVertex2f(centerX + sinf(DEG2RAD*(i + 10))*radiusH, centerY + cosf(DEG2RAD*(i + 10))*radiusV);
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw ring
@@ -620,7 +620,7 @@ void DrawRing(Vector2 center, float innerRadius, float outerRadius, float startA
 
             angle += stepLength;
         }
-    rlEnd();
+    RLEND();
 
     rlSetTexture(0);
 #else
@@ -639,7 +639,7 @@ void DrawRing(Vector2 center, float innerRadius, float outerRadius, float startA
 
             angle += stepLength;
         }
-    rlEnd();
+    RLEND();
 #endif
 }
 
@@ -715,7 +715,7 @@ void DrawRingLines(Vector2 center, float innerRadius, float outerRadius, float s
             rlVertex2f(center.x + sinf(DEG2RAD*angle)*outerRadius, center.y + cosf(DEG2RAD*angle)*outerRadius);
             rlVertex2f(center.x + sinf(DEG2RAD*angle)*innerRadius, center.y + cosf(DEG2RAD*angle)*innerRadius);
         }
-    rlEnd();
+    RLEND();
 }
 
 // Draw a color-filled rectangle
@@ -782,7 +782,7 @@ void DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color
 
     rlBegin(RL_QUADS);
 
-        rlNormal3f(0.0f, 0.0f, 1.0f);
+        RLNORMAL3F(0.0f, 0.0f, 1.0f);
         rlColor4ub(color.r, color.g, color.b, color.a);
 
         rlTexCoord2f(texShapesRec.x/texShapes.width, texShapesRec.y/texShapes.height);
@@ -797,7 +797,7 @@ void DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color
         rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
         rlVertex2f(topRight.x, topRight.y);
 
-    rlEnd();
+    RLEND();
 
     rlSetTexture(0);
 #else
@@ -813,7 +813,7 @@ void DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color
         rlVertex2f(bottomLeft.x, bottomLeft.y);
         rlVertex2f(bottomRight.x, bottomRight.y);
 
-    rlEnd();
+    RLEND();
 #endif
 }
 
@@ -838,7 +838,7 @@ void DrawRectangleGradientEx(Rectangle rec, Color col1, Color col2, Color col3, 
     rlSetTexture(texShapes.id);
 
     rlBegin(RL_QUADS);
-        rlNormal3f(0.0f, 0.0f, 1.0f);
+        RLNORMAL3F(0.0f, 0.0f, 1.0f);
 
         // NOTE: Default raylib font character 95 is a white square
         rlColor4ub(col1.r, col1.g, col1.b, col1.a);
@@ -856,7 +856,7 @@ void DrawRectangleGradientEx(Rectangle rec, Color col1, Color col2, Color col3, 
         rlColor4ub(col4.r, col4.g, col4.b, col4.a);
         rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
         rlVertex2f(rec.x + rec.width, rec.y);
-    rlEnd();
+    RLEND();
 
     rlSetTexture(0);
 }
@@ -884,7 +884,7 @@ void DrawRectangleLines(int posX, int posY, int width, int height, Color color)
 
         rlVertex2f(posX + 1, posY + height);
         rlVertex2f(posX + 1, posY + 1);
-    rlEnd();
+    RLEND();
 #endif
 }
 
@@ -1069,7 +1069,7 @@ void DrawRectangleRounded(Rectangle rec, float roundness, int segments, Color co
         rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
         rlVertex2f(point[9].x, point[9].y);
 
-    rlEnd();
+    RLEND();
     rlSetTexture(0);
 #else
     rlBegin(RL_TRIANGLES);
@@ -1133,7 +1133,7 @@ void DrawRectangleRounded(Rectangle rec, float roundness, int segments, Color co
         rlVertex2f(point[9].x, point[9].y);
         rlVertex2f(point[8].x, point[8].y);
         rlVertex2f(point[10].x, point[10].y);
-    rlEnd();
+    RLEND();
 #endif
 }
 
@@ -1272,7 +1272,7 @@ void DrawRectangleRoundedLines(Rectangle rec, float roundness, int segments, flo
             rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
             rlVertex2f(point[14].x, point[14].y);
 
-        rlEnd();
+        RLEND();
         rlSetTexture(0);
 #else
         rlBegin(RL_TRIANGLES);
@@ -1334,7 +1334,7 @@ void DrawRectangleRoundedLines(Rectangle rec, float roundness, int segments, flo
             rlVertex2f(point[15].x, point[15].y);
             rlVertex2f(point[7].x, point[7].y);
             rlVertex2f(point[14].x, point[14].y);
-        rlEnd();
+        RLEND();
 #endif
     }
     else
@@ -1365,7 +1365,7 @@ void DrawRectangleRoundedLines(Rectangle rec, float roundness, int segments, flo
                 rlVertex2f(point[i + 1].x, point[i + 1].y);
             }
 
-        rlEnd();
+        RLEND();
     }
 }
 
@@ -1390,7 +1390,7 @@ void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color)
 
         rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
         rlVertex2f(v3.x, v3.y);
-    rlEnd();
+    RLEND();
 
     rlSetTexture(0);
 #else
@@ -1399,7 +1399,7 @@ void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color)
         rlVertex2f(v1.x, v1.y);
         rlVertex2f(v2.x, v2.y);
         rlVertex2f(v3.x, v3.y);
-    rlEnd();
+    RLEND();
 #endif
 }
 
@@ -1417,7 +1417,7 @@ void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color)
 
         rlVertex2f(v3.x, v3.y);
         rlVertex2f(v1.x, v1.y);
-    rlEnd();
+    RLEND();
 }
 
 // Draw a triangle fan defined by points
@@ -1445,7 +1445,7 @@ void DrawTriangleFan(Vector2 *points, int pointCount, Color color)
                 rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
                 rlVertex2f(points[i + 1].x, points[i + 1].y);
             }
-        rlEnd();
+        RLEND();
         rlSetTexture(0);
     }
 }
@@ -1474,7 +1474,7 @@ void DrawTriangleStrip(Vector2 *points, int pointCount, Color color)
                     rlVertex2f(points[i - 2].x, points[i - 2].y);
                 }
             }
-        rlEnd();
+        RLEND();
     }
 }
 
@@ -1505,7 +1505,7 @@ void DrawPoly(Vector2 center, int sides, float radius, float rotation, Color col
             rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, texShapesRec.y/texShapes.height);
             rlVertex2f(center.x + sinf(DEG2RAD*centralAngle)*radius, center.y + cosf(DEG2RAD*centralAngle)*radius);
         }
-    rlEnd();
+    RLEND();
     rlSetTexture(0);
 #else
     rlBegin(RL_TRIANGLES);
@@ -1519,7 +1519,7 @@ void DrawPoly(Vector2 center, int sides, float radius, float rotation, Color col
             centralAngle += 360.0f/(float)sides;
             rlVertex2f(center.x + sinf(DEG2RAD*centralAngle)*radius, center.y + cosf(DEG2RAD*centralAngle)*radius);
         }
-    rlEnd();
+    RLEND();
 #endif
 }
 
@@ -1538,7 +1538,7 @@ void DrawPolyLines(Vector2 center, int sides, float radius, float rotation, Colo
             centralAngle += 360.0f/(float)sides;
             rlVertex2f(center.x + sinf(DEG2RAD*centralAngle)*radius, center.y + cosf(DEG2RAD*centralAngle)*radius);
         }
-    rlEnd();
+    RLEND();
 }
 
 void DrawPolyLinesEx(Vector2 center, int sides, float radius, float rotation, float lineThick, Color color)
@@ -1569,7 +1569,7 @@ void DrawPolyLinesEx(Vector2 center, int sides, float radius, float rotation, fl
             rlTexCoord2f((texShapesRec.x + texShapesRec.width)/texShapes.width, (texShapesRec.y + texShapesRec.height)/texShapes.height);
             rlVertex2f(center.x + sinf(DEG2RAD*centralAngle)*innerRadius, center.y + cosf(DEG2RAD*centralAngle)*innerRadius);
         }
-    rlEnd();
+    RLEND();
     rlSetTexture(0);
 #else
     rlBegin(RL_TRIANGLES);
@@ -1588,7 +1588,7 @@ void DrawPolyLinesEx(Vector2 center, int sides, float radius, float rotation, fl
 
             centralAngle = nextAngle;
         }
-    rlEnd();
+    RLEND();
 #endif
 }
 

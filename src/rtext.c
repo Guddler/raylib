@@ -218,6 +218,9 @@ extern void LoadFontDefault(void)
                 ((unsigned short *)imFont.data)[i + j] = 0xffff;
             }
             else ((unsigned short *)imFont.data)[i + j] = 0x00ff;
+            #ifdef __amigaos4__
+            ((unsigned short *)imFont.data)[i + j] = __builtin_bswap16(((unsigned short *)imFont.data)[i + j]);
+            #endif
         }
 
         counter++;

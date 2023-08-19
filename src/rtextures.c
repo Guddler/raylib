@@ -3592,7 +3592,7 @@ void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2
         rlBegin(RL_QUADS);
 
             rlColor4ub(tint.r, tint.g, tint.b, tint.a);
-            rlNormal3f(0.0f, 0.0f, 1.0f);                          // Normal vector pointing towards viewer
+            RLNORMAL3F(0.0f, 0.0f, 1.0f);                          // Normal vector pointing towards viewer
 
             // Top-left corner for texture and quad
             if (flipX) rlTexCoord2f((source.x + source.width)/width, source.y/height);
@@ -3614,7 +3614,7 @@ void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2
             else rlTexCoord2f((source.x + source.width)/width, source.y/height);
             rlVertex2f(topRight.x, topRight.y);
 
-        rlEnd();
+        RLEND();
         rlSetTexture(0);
 
         // NOTE: Vertex position can be transformed using matrices
@@ -3631,7 +3631,7 @@ void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2
 
             rlBegin(RL_QUADS);
                 rlColor4ub(tint.r, tint.g, tint.b, tint.a);
-                rlNormal3f(0.0f, 0.0f, 1.0f);                          // Normal vector pointing towards viewer
+                RLNORMAL3F(0.0f, 0.0f, 1.0f);                          // Normal vector pointing towards viewer
 
                 // Bottom-left corner for texture and quad
                 if (flipX) rlTexCoord2f((source.x + source.width)/width, source.y/height);
@@ -3652,7 +3652,7 @@ void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2
                 if (flipX) rlTexCoord2f(source.x/width, source.y/height);
                 else rlTexCoord2f((source.x + source.width)/width, source.y/height);
                 rlVertex2f(dest.width, 0.0f);
-            rlEnd();
+            RLEND();
         rlPopMatrix();
         rlSetTexture(0);
         */
@@ -3727,7 +3727,7 @@ void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest,
 
             rlBegin(RL_QUADS);
                 rlColor4ub(tint.r, tint.g, tint.b, tint.a);
-                rlNormal3f(0.0f, 0.0f, 1.0f);               // Normal vector pointing towards viewer
+                RLNORMAL3F(0.0f, 0.0f, 1.0f);               // Normal vector pointing towards viewer
 
                 if (nPatchInfo.layout == NPATCH_NINE_PATCH)
                 {
@@ -3849,7 +3849,7 @@ void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest,
                     rlTexCoord2f(coordD.x, coordA.y); rlVertex2f(vertD.x, vertA.y);  // Top-right corner for texture and quad
                     rlTexCoord2f(coordC.x, coordA.y); rlVertex2f(vertC.x, vertA.y);  // Top-left corner for texture and quad
                 }
-            rlEnd();
+            RLEND();
         rlPopMatrix();
 
         rlSetTexture(0);

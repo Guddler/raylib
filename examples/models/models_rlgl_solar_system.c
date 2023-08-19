@@ -168,5 +168,5 @@ void DrawSphereBasic(Color color)
                            cosf(DEG2RAD*(270+(180/(rings + 1))*(i+1)))*cosf(DEG2RAD*((j+1)*360/slices)));
             }
         }
-    rlEnd();
+    RLEND();
 }
