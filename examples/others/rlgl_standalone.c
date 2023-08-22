@@ -67,7 +67,7 @@
 #if defined(__EMSCRIPTEN__)
     #define GLFW_INCLUDE_ES2
 #endif
-#include "GLFW/glfw3.h"         // Windows/Context and inputs management
+#include <GLFW/glfw3.h>         // Windows/Context and inputs management
 
 #include <stdio.h>              // Required for: printf()
 

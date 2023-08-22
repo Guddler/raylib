@@ -96,7 +96,7 @@ int main(void)
                 DrawGrid(10, 1.0f);     // Draw a grid
             EndMode3D();                // End 3d mode drawing, returns to orthographic 2d mode
 
-            DrawText("TEXT DRAWN IN RENDER TEXTURE", 200, 10, 30, RED);
+            DrawText("_TEXT DRAWN IN RENDER TEXTURE", 200, 10, 30, RED);
         EndTextureMode();               // End drawing to texture (now we have a texture available for next passes)
 
         BeginDrawing();

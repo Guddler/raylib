@@ -14725,10 +14725,18 @@ typedef unsigned char           c89atomic_bool;
     #define c89atomic_fetch_and_explicit_16(dst, src, order)        __atomic_fetch_and(dst, src, order)
     #define c89atomic_fetch_and_explicit_32(dst, src, order)        __atomic_fetch_and(dst, src, order)
     #define c89atomic_fetch_and_explicit_64(dst, src, order)        __atomic_fetch_and(dst, src, order)
+#ifndef __amigaos4__    
     #define c89atomic_compare_and_swap_8 (dst, expected, desired)   __sync_val_compare_and_swap(dst, expected, desired)
     #define c89atomic_compare_and_swap_16(dst, expected, desired)   __sync_val_compare_and_swap(dst, expected, desired)
     #define c89atomic_compare_and_swap_32(dst, expected, desired)   __sync_val_compare_and_swap(dst, expected, desired)
     #define c89atomic_compare_and_swap_64(dst, expected, desired)   __sync_val_compare_and_swap(dst, expected, desired)
+#else
+    // TODO: THIS IS WRONG. FIX IT
+    #define c89atomic_compare_and_swap_8 (dst, expected, desired)   __atomic_compare_exchange_n(dst, expected, desired, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST)
+    #define c89atomic_compare_and_swap_16(dst, expected, desired)   __atomic_compare_exchange_n(dst, expected, desired, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST)
+    #define c89atomic_compare_and_swap_32(dst, expected, desired)   __atomic_compare_exchange_n(dst, expected, desired, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST)
+    #define c89atomic_compare_and_swap_64(dst, expected, desired)   __atomic_compare_exchange_n(dst, expected, desired, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST)
+#endif    
     typedef c89atomic_uint8 c89atomic_flag;
     #define c89atomic_flag_test_and_set_explicit(dst, order)        (c89atomic_bool)__atomic_test_and_set(dst, order)
     #define c89atomic_flag_clear_explicit(dst, order)               __atomic_clear(dst, order)

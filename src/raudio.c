@@ -1437,6 +1437,7 @@ Music LoadMusicStreamFromMemory(const char *fileType, const unsigned char *data,
             musicLoaded = true;
         }
     }
+    
 #endif
 #if defined(SUPPORT_FILEFORMAT_OGG)
     else if (strcmp(fileType, ".ogg") == 0)
