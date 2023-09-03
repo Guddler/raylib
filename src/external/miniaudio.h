@@ -632,11 +632,11 @@ To run locally, you'll need to use emrun:
     | MA_ENABLE_WEBAUDIO               | Used in conjunction with MA_ENABLE_ONLY_SPECIFIC_BACKENDS to       |
     |                                  | enable the Web Audio backend.                                      |
     +----------------------------------+--------------------------------------------------------------------+
-    | MA_ENABLE_NULL                   | Used in conjunction with MA_ENABLE_ONLY_SPECIFIC_BACKENDS to       |
-    |                                  | enable the null backend.                                           |
-    +----------------------------------+--------------------------------------------------------------------+
     | MA_ENABLE_AHI                    | Used in conjunction with MA_ENABLE_ONLY_SPECIFIC_BACKENDS to       |
     |                                  | enable the Amiga AHI backend.                                      |
+    +----------------------------------+--------------------------------------------------------------------+
+    | MA_ENABLE_NULL                   | Used in conjunction with MA_ENABLE_ONLY_SPECIFIC_BACKENDS to       |
+    |                                  | enable the null backend.                                           |
     +----------------------------------+--------------------------------------------------------------------+
     | MA_NO_DECODING                   | Disables decoding APIs.                                            |
     +----------------------------------+--------------------------------------------------------------------+
@@ -3604,9 +3604,9 @@ example, ALSA, which is specific to Linux, will not be included in the Windows b
     | AAudio      | ma_backend_aaudio     | Android 8+                                             |
     | OpenSL ES   | ma_backend_opensl     | Android (API level 16+)                                |
     | Web Audio   | ma_backend_webaudio   | Web (via Emscripten)                                   |
+    | AHI         | ma_backend_ahi        | Amiga AHI                                              |
     | Custom      | ma_backend_custom     | Cross Platform                                         |
     | Null        | ma_backend_null       | Cross Platform (not used on Web)                       |
-    | AHI         | ma_backend_ahi        | Amiga AHI                                              |
     +-------------+-----------------------+--------------------------------------------------------+
 
 Some backends have some nuance details you may want to be aware of.
@@ -6553,7 +6553,6 @@ This section contains the APIs for device playback and capture. Here is where yo
 #if defined (MA_AMIGAOS4)
     #define MA_SUPPORT_AHI
     #define MA_NO_RUNTIME_LINKING
-    static const char __attribute((used)) min_stack[] = "$STACK:10240000";
 #endif    
 #if defined(MA_UNIX) && !defined(MA_ORBIS) && !defined(MA_PROSPERO)
     #if defined(MA_LINUX)
@@ -8128,8 +8127,8 @@ When `backends` is NULL, the default priority order will be used. Below is a lis
     | AAudio      | ma_backend_aaudio     | Android 8+                                             |
     | OpenSL|ES   | ma_backend_opensl     | Android (API level 16+)                                |
     | Web Audio   | ma_backend_webaudio   | Web (via Emscripten)                                   |
-    | Null        | ma_backend_null       | Cross Platform (not used on Web)                       |
     | AHI         | ma_backend_ahi        | AmigaOS4 AHI                                           |
+    | Null        | ma_backend_null       | Cross Platform (not used on Web)                       |
     |-------------|-----------------------|--------------------------------------------------------|
 
 The context can be configured via the `pConfig` argument. The config object is initialized with `ma_context_config_init()`. Individual configuration settings
