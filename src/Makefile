@@ -104,19 +104,6 @@ ifeq ($(PLATFORM),PLATFORM_RPI)
     endif
 endif
 
-ifeq ($(PLATFORM),PLATFORM_AOS4)
-	#USE_AOS4_CROSS_COMPILER ?= TRUE
-	#USE_EXTERNAL_GLFW ?= ON
-	#ifndef AOS4_TOOLCHAIN_DEFINED
-	#	echo "ERROR: External toolchain required for AOS4"
-	#endif
-	# Perform a custom build
-	CUSTOMIZE_BUILD ?= ON
-	BUILD_EXAMPLES ?= OFF
-	USE_AUDIO ?= OFF
-	SUPPORT_MODULE_RAUDIO ?= OFF
-endif
-
 # Determine if the file has root access (only required to install raylib)
 # "whoami" prints the name of the user that calls him (so, if it is the root user, "whoami" prints "root")
 ROOT = $(shell whoami)
