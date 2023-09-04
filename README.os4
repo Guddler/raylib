@@ -20,7 +20,7 @@ Since most people seem to be cross-compiling when building for AOS4, and not all
 the cmake setup and for this reason, currently, in order to build you will need to supply a toolchain file
 on the command line along with additional options as per the following example:
 
-cmake -DCMAKE_TOOLCHAIN_FILE=../../raylib_clib2_toolchain -DPLATFORM=AOS4 -DOPENGL_VERSION=XXX -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../../raylib_clib2_toolchain -DPLATFORM=AOS4 -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release ..
 
 You must ensure that the following is defined somewhere in your toolchain file as the Raylib Makefile will
 check for it. Checking that you have supplied a toolchain file isn't really required as without it
