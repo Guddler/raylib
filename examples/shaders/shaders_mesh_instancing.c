@@ -22,7 +22,7 @@
 
 #include <stdlib.h>         // Required for: calloc(), free()
 
-#if defined(PLATFORM_DESKTOP)
+#if defined(PLATFORM_DESKTOP) && !defined(__amigaos4__)
     #define GLSL_VERSION            330
 #else   // PLATFORM_ANDROID, PLATFORM_WEB
     #define GLSL_VERSION            100

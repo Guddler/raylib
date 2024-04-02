@@ -23,7 +23,7 @@
 #define RLIGHTS_IMPLEMENTATION
 #include "rlights.h"
 
-#if defined(PLATFORM_DESKTOP)
+#if defined(PLATFORM_DESKTOP) && !defined(__amigaos4__)
     #define GLSL_VERSION            330
 #else   // PLATFORM_ANDROID, PLATFORM_WEB
     #define GLSL_VERSION            100
@@ -122,6 +122,7 @@ int main(void)
     if (!rlFramebufferComplete(gBuffer.framebuffer))
     {
         TraceLog(LOG_WARNING, "Framebuffer is not complete");
+        CloseWindow();
         exit(1);
     }
 
