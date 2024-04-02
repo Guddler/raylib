@@ -25,7 +25,7 @@
  *    distribution.
  *
  *************************************************************************/
-#ifndef __amigaos4__
+
 #ifndef _glfw3_h_
 #define _glfw3_h_
 
@@ -5536,6 +5536,3 @@ GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window
 
 #endif /* _glfw3_h_ */
 
-#else
-#include_next <GLFW/glfw3.h>
-#endif

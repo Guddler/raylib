@@ -218,7 +218,7 @@ static void DrawTexturedCurve(void)
         rlBegin(RL_QUADS);
 
         rlColor4ub(255,255,255,255);
-        RLNORMAL3F(0.0f, 0.0f, 1.0f);
+        rlNormal3f(0.0f, 0.0f, 1.0f);
 
         rlTexCoord2f(0, previousV);
         rlVertex2f(prevNegNormal.x, prevNegNormal.y);
@@ -232,7 +232,7 @@ static void DrawTexturedCurve(void)
         rlTexCoord2f(0, v);
         rlVertex2f(currentNegNormal.x, currentNegNormal.y);
 
-        RLEND();
+        rlEnd();
 
         // The current step is the start of the next step
         previous = current;

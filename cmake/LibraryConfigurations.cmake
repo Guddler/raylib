@@ -50,9 +50,9 @@ elseif (${PLATFORM} MATCHES "Web")
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
 
 elseif (${PLATFORM} MATCHES "AOS4")
-    set(PLATFORM_CPP "PLATFORM_AOS4")
+    set(PLATFORM_CPP "PLATFORM_DESKTOP")
     set(GRAPHICS "GRAPHICS_API_OPENGL_ES2")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLATFORM_DESKTOP")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
     set(LIBS_PRIVATE glfw3 GL pthread atomic)
 
@@ -66,19 +66,6 @@ elseif (${PLATFORM} MATCHES "Android")
 
     find_library(OPENGL_LIBRARY OpenGL)
     set(LIBS_PRIVATE m log android EGL GLESv2 OpenSLES atomic c)
-
-elseif (${PLATFORM} MATCHES "Raspberry Pi")
-    set(PLATFORM_CPP "PLATFORM_RPI")
-    set(GRAPHICS "GRAPHICS_API_OPENGL_ES2")
-
-    add_definitions(-D_DEFAULT_SOURCE)
-
-    find_library(GLESV2 brcmGLESv2 HINTS /opt/vc/lib)
-    find_library(EGL brcmEGL HINTS /opt/vc/lib)
-    find_library(BCMHOST bcm_host HINTS /opt/vc/lib)
-    include_directories(/opt/vc/include /opt/vc/include/interface/vmcs_host/linux /opt/vc/include/interface/vcos/pthreads)
-    link_directories(/opt/vc/lib)
-    set(LIBS_PRIVATE ${GLESV2} ${EGL} ${BCMHOST} pthread rt m dl)
 
 elseif ("${PLATFORM}" MATCHES "DRM")
     set(PLATFORM_CPP "PLATFORM_DRM")
