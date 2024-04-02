@@ -94,6 +94,15 @@ USE_EXTERNAL_GLFW     ?= FALSE
 # NOTE: This variable is only used for PLATFORM_OS: LINUX
 USE_WAYLAND_DISPLAY   ?= FALSE
 
+# Use cross-compiler for PLATFORM_RPI
+ifeq ($(PLATFORM),PLATFORM_RPI)
+    USE_RPI_CROSS_COMPILER ?= FALSE
+    ifeq ($(USE_RPI_CROSS_COMPILER),TRUE)
+        RPI_TOOLCHAIN ?= C:/SysGCC/Raspberry
+        RPI_TOOLCHAIN_SYSROOT ?= $(RPI_TOOLCHAIN)/arm-linux-gnueabihf/sysroot
+    endif
+endif
+
 # Determine if the file has root access (only required to install raylib)
 # "whoami" prints the name of the user that calls him (so, if it is the root user, "whoami" prints "root")
 ROOT = $(shell whoami)
