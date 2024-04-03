@@ -14,9 +14,13 @@ Enter int build dir and execute cmake:
 
 ```
 cd build
-cmake -DCMAKE_TOOLCHAIN_FILE=<YourClib4Toolchain> -DPLATFORM=AOS4 -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release -DUSE_EXTERNAL_GLFW=ON ..
+cmake -DCMAKE_TOOLCHAIN_FILE=<YourClib4Toolchain> -DCMAKE_BUILD_TYPE=Release -DUSE_EXTERNAL_GLFW=ON ..
 make
 ```
+
+If you don't want to compile the examples add to cmake command:
+
+```-DBUILD_EXAMPLES=OFF ```
 
 An example of a cmake toolchain for AmigaOS4 can be found here:
 
