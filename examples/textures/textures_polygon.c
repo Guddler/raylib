@@ -134,7 +134,7 @@ void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2
             rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
             rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
         }
-    RLEND();
+    rlEnd();
 
     rlSetTexture(0);
 }

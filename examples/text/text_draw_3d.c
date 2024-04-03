@@ -495,7 +495,7 @@ static void DrawTextCodepoint3D(Font font, int codepoint, Vector3 position, floa
                 rlColor4ub(tint.r, tint.g, tint.b, tint.a);
 
                 // Front Face
-                RLNORMAL3F(0.0f, 1.0f, 0.0f);                                   // Normal Pointing Up
+                rlNormal3f(0.0f, 1.0f, 0.0f);                                   // Normal Pointing Up
                 rlTexCoord2f(tx, ty); rlVertex3f(x,         y, z);              // Top Left Of The Texture and Quad
                 rlTexCoord2f(tx, th); rlVertex3f(x,         y, z + height);     // Bottom Left Of The Texture and Quad
                 rlTexCoord2f(tw, th); rlVertex3f(x + width, y, z + height);     // Bottom Right Of The Texture and Quad
@@ -504,13 +504,13 @@ static void DrawTextCodepoint3D(Font font, int codepoint, Vector3 position, floa
                 if (backface)
                 {
                     // Back Face
-                    RLNORMAL3F(0.0f, -1.0f, 0.0f);                              // Normal Pointing Down
+                    rlNormal3f(0.0f, -1.0f, 0.0f);                              // Normal Pointing Down
                     rlTexCoord2f(tx, ty); rlVertex3f(x,         y, z);          // Top Right Of The Texture and Quad
                     rlTexCoord2f(tw, ty); rlVertex3f(x + width, y, z);          // Top Left Of The Texture and Quad
                     rlTexCoord2f(tw, th); rlVertex3f(x + width, y, z + height); // Bottom Left Of The Texture and Quad
                     rlTexCoord2f(tx, th); rlVertex3f(x,         y, z + height); // Bottom Right Of The Texture and Quad
                 }
-            RLEND();
+            rlEnd();
         rlPopMatrix();
 
         rlSetTexture(0);

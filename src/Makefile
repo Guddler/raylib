@@ -8,7 +8,6 @@
 #    PLATFORM_DESKTOP:  OSX/macOS (arm64, x86_64)
 #    PLATFORM_DESKTOP:  FreeBSD, OpenBSD, NetBSD, DragonFly
 #    PLATFORM_ANDROID:  Android (arm, i686, arm64, x86_64)
-#    PLATFORM_RPI:      Raspberry Pi (deprecated - RPI OS Buster only)
 #    PLATFORM_DRM:      Linux native mode, including Raspberry Pi (RPI OS Bullseye)
 #    PLATFORM_WEB:      HTML5 (Chrome, Firefox)
 #	 PLATFORM_AOS4:     AmigaOS4
@@ -42,7 +41,7 @@
 
 # Define required environment variables
 #------------------------------------------------------------------------------------------------
-# Define target platform: PLATFORM_DESKTOP, PLATFORM_RPI, PLATFORM_DRM, PLATFORM_ANDROID, PLATFORM_WEB, PLATFORM_AOS4
+# Define target platform: PLATFORM_DESKTOP, PLATFORM_DRM, PLATFORM_ANDROID, PLATFORM_WEB, PLATFORM_AOS4
 PLATFORM             ?= PLATFORM_DESKTOP
 
 # Define required raylib variables
@@ -151,15 +150,6 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         endif
     endif
 endif
-ifeq ($(PLATFORM),PLATFORM_RPI)
-    UNAMEOS = $(shell uname)
-    ifeq ($(UNAMEOS),Linux)
-        PLATFORM_OS = LINUX
-    endif
-    ifndef PLATFORM_SHELL
-        PLATFORM_SHELL = sh
-    endif
-endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
     UNAMEOS = $(shell uname)
     ifeq ($(UNAMEOS),Linux)
@@ -242,10 +232,6 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     #GRAPHICS = GRAPHICS_API_OPENGL_43      # Uncomment to use OpenGL 4.3
     #GRAPHICS = GRAPHICS_API_OPENGL_ES2     # Uncomment to use OpenGL ES 2.0 (ANGLE)
 endif
-ifeq ($(PLATFORM),PLATFORM_RPI)
-    # On RPI OpenGL ES 2.0 must be used
-    GRAPHICS = GRAPHICS_API_OPENGL_ES2
-endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
     # On DRM OpenGL ES 2.0 must be used
     GRAPHICS = GRAPHICS_API_OPENGL_ES2
@@ -276,14 +262,6 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),BSD)
         # FreeBSD, OpenBSD, NetBSD, DragonFly default compiler
         CC = clang
-    endif
-endif
-ifeq ($(PLATFORM),PLATFORM_RPI)
-    ifeq ($(USE_RPI_CROSS_COMPILER),TRUE)
-        # Define RPI cross-compiler
-        #CC = armv6j-hardfloat-linux-gnueabi-gcc
-        CC = $(RPI_TOOLCHAIN)/bin/arm-linux-gnueabihf-gcc
-        AR = $(RPI_TOOLCHAIN)/bin/arm-linux-gnueabihf-ar
     endif
 endif
 ifeq ($(PLATFORM),PLATFORM_WEB)
@@ -459,11 +437,6 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         INCLUDE_PATHS += -I/usr/local/include
     endif
 endif
-ifeq ($(PLATFORM),PLATFORM_RPI)
-    INCLUDE_PATHS += -I$(RPI_TOOLCHAIN_SYSROOT)/opt/vc/include
-    INCLUDE_PATHS += -I$(RPI_TOOLCHAIN_SYSROOT)/opt/vc/include/interface/vmcs_host/linux
-    INCLUDE_PATHS += -I$(RPI_TOOLCHAIN_SYSROOT)/opt/vc/include/interface/vcos/pthreads
-endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
     INCLUDE_PATHS += -I/usr/include/libdrm
 endif
@@ -509,9 +482,6 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         LDFLAGS += -Wl,-soname,lib$(RAYLIB_LIB_NAME).$(RAYLIB_API_VERSION).so -Lsrc -L/usr/local/lib
     endif
 endif
-ifeq ($(PLATFORM),PLATFORM_RPI)
-    LDFLAGS += -Wl,-soname,lib$(RAYLIB_LIB_NAME).so.$(RAYLIB_API_VERSION) -L$(RPI_TOOLCHAIN_SYSROOT)/opt/vc/lib
-endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
     LDFLAGS += -Wl,-soname,lib$(RAYLIB_LIB_NAME).so.$(RAYLIB_API_VERSION)
 endif
@@ -555,12 +525,6 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         # Check the version name. If GLFW3 was built manually, it may have produced
         # a static library known as libglfw3.a. In that case, the name should be -lglfw3
         LDLIBS = -lglfw
-    endif
-endif
-ifeq ($(PLATFORM),PLATFORM_RPI)
-    LDLIBS = -lbrcmGLESv2 -lbrcmEGL -lpthread -lrt -lm -lbcm_host -ldl
-    ifeq ($(RAYLIB_MODULE_AUDIO),TRUE)
-        LDLIBS += -latomic
     endif
 endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
@@ -646,14 +610,6 @@ else
 				cd $(RAYLIB_RELEASE_PATH) && ln -fs lib$(RAYLIB_LIB_NAME).$(RAYLIB_VERSION).so lib$(RAYLIB_LIB_NAME).$(RAYLIB_API_VERSION).so
 				cd $(RAYLIB_RELEASE_PATH) && ln -fs lib$(RAYLIB_LIB_NAME).$(RAYLIB_VERSION).so lib$(RAYLIB_LIB_NAME).so
             endif
-        endif
-        ifeq ($(PLATFORM),PLATFORM_RPI)
-                # Compile raylib shared library version $(RAYLIB_VERSION).
-                # WARNING: you should type "make clean" before doing this target
-				$(CC) -shared -o $(RAYLIB_RELEASE_PATH)/lib$(RAYLIB_LIB_NAME).so.$(RAYLIB_VERSION) $(OBJS) $(LDFLAGS) $(LDLIBS)
-				@echo "raylib shared library generated (lib$(RAYLIB_LIB_NAME).so.$(RAYLIB_VERSION)) in $(RAYLIB_RELEASE_PATH)!"
-				cd $(RAYLIB_RELEASE_PATH) && ln -fsv lib$(RAYLIB_LIB_NAME).so.$(RAYLIB_VERSION) lib$(RAYLIB_LIB_NAME).so.$(RAYLIB_API_VERSION)
-				cd $(RAYLIB_RELEASE_PATH) && ln -fsv lib$(RAYLIB_LIB_NAME).so.$(RAYLIB_API_VERSION) lib$(RAYLIB_LIB_NAME).so
         endif
         ifeq ($(PLATFORM),PLATFORM_DRM)
                 # Compile raylib shared library version $(RAYLIB_VERSION).

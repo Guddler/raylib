@@ -952,6 +952,57 @@ static const uint32_t GlbMagicBinChunk = 0x004E4942;
 #define CGLTF_VALIDATE_ENABLE_ASSERTS 0
 #endif
 
+static inline bool cgltf_is_big_endian()
+{
+	union
+	{
+		uint32_t i;
+		char c[4];
+	} bint = { 0x01020304 };
+
+	return (bint.c[0] == 1); 
+}
+
+static inline int16_t cgltf_read_int16(const void* data)
+{
+	int16_t i16;
+	memcpy(&i16, data, sizeof(i16));
+	return cgltf_is_big_endian() ? (i16 << 8) | ((i16 >> 8) & 0xFF) : i16;
+}
+
+static inline uint16_t cgltf_read_uint16(const void* data)
+{
+	uint16_t u16;
+	memcpy(&u16, data, sizeof(u16));
+	return cgltf_is_big_endian() ? __builtin_bswap16(u16) : u16;
+}
+
+static inline int32_t cgltf_read_int32(const void* data)
+{
+	int32_t i32;
+	memcpy(&i32, data, sizeof(i32));
+	if (cgltf_is_big_endian()) {
+		i32 = ((i32 << 8) & 0xFF00FF00) | ((i32 >> 8) & 0xFF00FF); 
+		return (i32 << 16) | ((i32 >> 16) & 0xFFFF);
+	}
+	else
+		return i32;
+}
+
+static inline uint32_t cgltf_read_uint32(const void* data)
+{
+	uint32_t u32;
+	memcpy(&u32, data, sizeof(u32));
+	return cgltf_is_big_endian() ? __builtin_bswap32(u32) : u32;
+}
+
+static inline float cgltf_read_float(const void* data)
+{
+	float f32;
+	memcpy(&f32, data, sizeof(f32));
+	return cgltf_is_big_endian() ? __builtin_bswap32(f32) : f32;
+}
+
 static void* cgltf_default_alloc(void* user, cgltf_size size)
 {
 	(void)user;
@@ -1073,9 +1124,8 @@ cgltf_result cgltf_parse(const cgltf_options* options, const void* data, cgltf_s
 		fixed_options.memory.free_func = &cgltf_default_free;
 	}
 
-	uint32_t tmp;
 	// Magic
-	memcpy(&tmp, data, 4);
+	uint32_t tmp = cgltf_read_uint32(data);
 	if (tmp != GlbMagic)
 	{
 		if (fixed_options.type == cgltf_file_type_invalid)
@@ -1103,15 +1153,14 @@ cgltf_result cgltf_parse(const cgltf_options* options, const void* data, cgltf_s
 
 	const uint8_t* ptr = (const uint8_t*)data;
 	// Version
-	memcpy(&tmp, ptr + 4, 4);
-	uint32_t version = tmp;
+	uint32_t version = cgltf_read_uint32(ptr + 4);
 	if (version != GlbVersion)
 	{
 		return version < GlbVersion ? cgltf_result_legacy_gltf : cgltf_result_unknown_format;
 	}
 
 	// Total length
-	memcpy(&tmp, ptr + 8, 4);
+	tmp = cgltf_read_uint32(ptr + 8);
 	if (tmp > size)
 	{
 		return cgltf_result_data_too_short;
@@ -1125,15 +1174,14 @@ cgltf_result cgltf_parse(const cgltf_options* options, const void* data, cgltf_s
 	}
 
 	// JSON chunk: length
-	uint32_t json_length;
-	memcpy(&json_length, json_chunk, 4);
+	uint32_t json_length = cgltf_read_uint32(json_chunk);
 	if (GlbHeaderSize + GlbChunkHeaderSize + json_length > size)
 	{
 		return cgltf_result_data_too_short;
 	}
 
 	// JSON chunk: magic
-	memcpy(&tmp, json_chunk + 4, 4);
+	tmp = cgltf_read_uint32(json_chunk + 4);
 	if (tmp != GlbMagicJsonChunk)
 	{
 		return cgltf_result_unknown_format;
@@ -1150,15 +1198,14 @@ cgltf_result cgltf_parse(const cgltf_options* options, const void* data, cgltf_s
 		const uint8_t* bin_chunk = json_chunk + json_length;
 
 		// Bin chunk: length
-		uint32_t bin_length;
-		memcpy(&bin_length, bin_chunk, 4);
+		uint32_t bin_length = cgltf_read_uint32(bin_chunk);
 		if (GlbHeaderSize + GlbChunkHeaderSize + json_length + GlbChunkHeaderSize + bin_length > size)
 		{
 			return cgltf_result_data_too_short;
 		}
 
 		// Bin chunk: magic
-		memcpy(&tmp, bin_chunk + 4, 4);
+		tmp = cgltf_read_uint32(bin_chunk + 4);
 		if (tmp != GlbMagicBinChunk)
 		{
 			return cgltf_result_unknown_format;
@@ -1508,7 +1555,7 @@ static cgltf_size cgltf_calc_index_bound(cgltf_buffer_view* buffer_view, cgltf_s
 	case cgltf_component_type_r_16u:
 		for (size_t i = 0; i < count; ++i)
 		{
-			cgltf_size v = ((unsigned short*)data)[i];
+			cgltf_size v = cgltf_is_big_endian() ? __builtin_bswap16(((unsigned short*)data)[i]) : ((unsigned short*)data)[i];
 			bound = bound > v ? bound : v;
 		}
 		break;
@@ -1516,7 +1563,7 @@ static cgltf_size cgltf_calc_index_bound(cgltf_buffer_view* buffer_view, cgltf_s
 	case cgltf_component_type_r_32u:
 		for (size_t i = 0; i < count; ++i)
 		{
-			cgltf_size v = ((unsigned int*)data)[i];
+			cgltf_size v = cgltf_is_big_endian() ? __builtin_bswap32(((unsigned int*)data)[i]) : ((unsigned int*)data)[i];
 			bound = bound > v ? bound : v;
 		}
 		break;
@@ -2213,11 +2260,11 @@ static cgltf_size cgltf_component_read_index(const void* in, cgltf_component_typ
 	switch (component_type)
 	{
 		case cgltf_component_type_r_16u:
-			return *((const uint16_t*) in);
+			return cgltf_read_uint16(((const uint16_t*) in));
 		case cgltf_component_type_r_32u:
-			return *((const uint32_t*) in);
+			return cgltf_read_uint32(((const uint32_t*) in));
 		case cgltf_component_type_r_32f:
-			return (cgltf_size)*((const float*) in);
+			return cgltf_read_float(((const float*) in));
 		case cgltf_component_type_r_8u:
 			return *((const uint8_t*) in);
 		default:
@@ -2238,9 +2285,9 @@ static cgltf_float cgltf_component_read_float(const void* in, cgltf_component_ty
 		{
 			// note: glTF spec doesn't currently define normalized conversions for 32-bit integers
 			case cgltf_component_type_r_16:
-				return *((const int16_t*) in) / (cgltf_float)32767;
+				return cgltf_read_int16(((const int16_t*) in)) / (cgltf_float)32767;
 			case cgltf_component_type_r_16u:
-				return *((const uint16_t*) in) / (cgltf_float)65535;
+				return cgltf_read_uint16(((const uint16_t*) in)) / (cgltf_float)65535;
 			case cgltf_component_type_r_8:
 				return *((const int8_t*) in) / (cgltf_float)127;
 			case cgltf_component_type_r_8u:
@@ -2408,19 +2455,14 @@ static cgltf_uint cgltf_component_read_uint(const void* in, cgltf_component_type
 	{
 		case cgltf_component_type_r_8:
 			return *((const int8_t*) in);
-
 		case cgltf_component_type_r_8u:
 			return *((const uint8_t*) in);
-
-		case cgltf_component_type_r_16:
-			return *((const int16_t*) in);
-
+		case cgltf_component_type_r_16:		
+			return cgltf_read_int16(((const int16_t*) in));
 		case cgltf_component_type_r_16u:
-			return *((const uint16_t*) in);
-
+			return cgltf_read_uint16(((const uint16_t*) in));
 		case cgltf_component_type_r_32u:
-			return *((const uint32_t*) in);
-
+			return cgltf_read_uint32(((const uint32_t*) in));
 		default:
 			return 0;
 	}

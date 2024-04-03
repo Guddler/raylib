@@ -26,7 +26,7 @@
 
 #include "raylib.h"
 
-#if defined(PLATFORM_DESKTOP) || defined(PLATFORM_AOS4)
+#if defined(PLATFORM_DESKTOP) && !defined(PLATFORM_AOS4)
     #if defined(GRAPHICS_API_OPENGL_ES2)
         #include "glad_gles2.h"       // Required for: OpenGL functionality 
         #define glGenVertexArrays glGenVertexArraysOES
@@ -42,7 +42,7 @@
         #endif
         #define GLSL_VERSION            330
     #endif
-#else   // PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB
+#else   // PLATFORM_ANDROID, PLATFORM_WEB
     #define GLSL_VERSION            100
 #endif
 
